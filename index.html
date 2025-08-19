@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,7 @@
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
-            font-family: 'Inter', 'Kanit', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
         .fa-spin-slow {
             animation: fa-spin 2s linear infinite;
@@ -70,19 +70,19 @@
                 
                 <aside class="lg:col-span-1 space-y-8">
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
-                        <h2 class="text-lg font-semibold text-slate-800 mb-4">ภาพรวมระบบ</h2>
+                        <h2 class="text-lg font-semibold text-slate-800 mb-4">System Overview</h2>
                         <div class="grid grid-cols-3 gap-4 text-center">
                             <div>
                                 <p class="text-2xl font-bold text-slate-700" id="total-servers">0</p>
-                                <p class="text-xs text-slate-500">ทั้งหมด</p>
+                                <p class="text-xs text-slate-500">Total</p>
                             </div>
                             <div>
                                 <p class="text-2xl font-bold text-green-600" id="online-servers">0</p>
-                                <p class="text-xs text-slate-500">ออนไลน์</p>
+                                <p class="text-xs text-slate-500">Online</p>
                             </div>
                             <div>
                                 <p class="text-2xl font-bold text-red-600" id="critical-servers">0</p>
-                                <p class="text-xs text-slate-500">วิกฤต</p>
+                                <p class="text-xs text-slate-500">Critical</p>
                             </div>
                         </div>
                         <div class="mt-6">
@@ -94,13 +94,13 @@
 
                     <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-lg font-semibold text-slate-800">ตัวกรอง</h2>
-                            <button id="reset-filters" class="text-xs font-medium text-sky-600 hover:text-sky-800">รีเซ็ต</button>
+                            <h2 class="text-lg font-semibold text-slate-800">Filters</h2>
+                            <button id="reset-filters" class="text-xs font-medium text-sky-600 hover:text-sky-800">Reset</button>
                         </div>
                         
                         <div class="space-y-3">
                             <label class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                                <span class="font-medium text-sm text-slate-700">ซ่อนเซิร์ฟเวอร์ Offline</span>
+                                <span class="font-medium text-sm text-slate-700">Hide Offline Servers</span>
                                 <input type="checkbox" id="hide-offline-toggle" class="form-checkbox h-5 w-5 text-sky-600 rounded border-slate-300 focus:ring-sky-500" checked>
                             </label>
                         </div>
@@ -114,7 +114,7 @@
                 <div id="server-list" class="lg:col-span-3 space-y-8">
                      <div class="text-center py-16">
                         <i class="fas fa-spinner fa-spin-slow text-4xl text-slate-300"></i>
-                        <p class="mt-4 text-slate-500">กำลังโหลดข้อมูลเซิร์ฟเวอร์...</p>
+                        <p class="mt-4 text-slate-500">Loading server data...</p>
                     </div>
                 </div>
             </div>
@@ -167,21 +167,21 @@
                     iconBg: 'bg-red-100',
                     iconText: 'text-red-600',
                     progressBg: 'bg-red-500',
-                    statusText: 'วิกฤต'
+                    statusText: 'Critical'
                 };
                 if (progress > 70) return {
                     cardBorder: 'border-amber-500',
                     iconBg: 'bg-amber-100',
                     iconText: 'text-amber-600',
                     progressBg: 'bg-amber-500',
-                    statusText: 'สูง'
+                    statusText: 'Warning'
                 };
                 return {
                     cardBorder: 'border-slate-100',
                     iconBg: 'bg-slate-100',
                     iconText: 'text-slate-600',
                     progressBg: 'bg-sky-500',
-                    statusText: 'ปกติ'
+                    statusText: 'Normal'
                 };
             };
 
@@ -201,7 +201,7 @@
                                 </div>
                                 <div class="text-right">
                                     <p class="font-bold text-slate-500">OFFLINE</p>
-                                    <p class="text-xs text-slate-400">โดย: ${data.owner}</p>
+                                    <p class="text-xs text-slate-400">By: ${data.owner}</p>
                                 </div>
                             </div>
                         </div>
@@ -232,7 +232,7 @@
                             </div>
                             <div class="flex justify-between text-xs text-slate-500">
                                 <span>${data.usedSpace || (data.totalSpace.replace(' GB','') * data.progress / 100).toFixed(1) + ' GB'} / ${data.totalSpace}</span>
-                                <span>เหลือ: ${data.freeSpace}</span>
+                                <span>Free: ${data.freeSpace}</span>
                             </div>
                         </div>
                         <div class="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
@@ -253,7 +253,7 @@
                 });
 
                 const groupedByFamily = filteredData.reduce((acc, server) => {
-                    const family = server.family || 'ไม่ระบุ Family';
+                    const family = server.family || 'Uncategorized';
                     if (!acc[family]) acc[family] = [];
                     acc[family].push(server);
                     return acc;
@@ -265,7 +265,7 @@
                     elements.serverList.innerHTML = `
                         <div class="text-center py-16 bg-white rounded-2xl shadow-sm border border-slate-100">
                             <i class="fas fa-info-circle text-4xl text-slate-300"></i>
-                            <p class="mt-4 text-slate-500">ไม่พบข้อมูลเซิร์ฟเวอร์ตามตัวกรองที่เลือก</p>
+                            <p class="mt-4 text-slate-500">No servers found matching the selected filters.</p>
                         </div>
                     `;
                 } else {
@@ -296,7 +296,7 @@
                 elements.criticalServers.textContent = critical.length;
 
                 const chartData = {
-                    labels: ['ปกติ', 'สูง', 'วิกฤต'],
+                    labels: ['Normal', 'Warning', 'Critical'],
                     datasets: [{
                         label: 'Server Status',
                         data: [normal.length, warning.length, critical.length],
@@ -338,7 +338,7 @@
                                     enabled: true,
                                     callbacks: {
                                         label: function(context) {
-                                            return `${context.label}: ${context.raw} เซิร์ฟเวอร์`;
+                                            return `${context.label}: ${context.raw} Servers`;
                                         }
                                     }
                                 }
@@ -349,7 +349,7 @@
             };
 
             const setupFilters = () => {
-                const families = [...new Set(serverData.map(s => s.family || 'ไม่ระบุ Family'))].sort();
+                const families = [...new Set(serverData.map(s => s.family || 'Uncategorized'))].sort();
                 elements.familyFilters.innerHTML += families.map(family => `
                     <label class="flex items-center space-x-3 cursor-pointer p-2 rounded-md hover:bg-slate-50">
                         <input type="checkbox" data-family="${family}" class="form-checkbox family-checkbox h-4 w-4 text-sky-600 rounded border-slate-300 focus:ring-sky-500">
@@ -375,7 +375,7 @@
                 elements.serverList.innerHTML = `
                     <div class="text-center py-16">
                         <i class="fas fa-spinner fa-spin-slow text-4xl text-slate-300"></i>
-                        <p class="mt-4 text-slate-500">กำลังโหลดข้อมูลเซิร์ฟเวอร์...</p>
+                        <p class="mt-4 text-slate-500">Loading server data...</p>
                     </div>
                 `;
                 
